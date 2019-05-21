@@ -36,23 +36,6 @@ public class UserService {
 			userDto.setPassword(user.getPassword());
 			userDto.setUserName(user.getUserName());
 			userDto.setPhone(user.getPhone());
-//			GroupDto groupDto = new GroupDto();
-//			if (user.getGroup().getGroupId() != null) {
-//				groupDto.setGroupId(user.getGroup().getGroupId());
-//			}
-//			if (user.getGroup().getName() != null) {
-//				groupDto.setName(user.getGroup().getName());
-//			}
-//			List<Role> roles = user.getRoles();
-//			List<RoleDto> roleDtos = new ArrayList<RoleDto>();
-//			for (Role role : roles) {
-//				RoleDto roleDto = new RoleDto();
-//				roleDto.setRoleId(role.getRoleId());
-//				roleDto.setName(role.getName());
-//				roleDtos.add(roleDto);
-//				userDto.setRoleDtos(roleDtos);
-//			}
-//			userDto.setGroupDto(groupDto);
 			return userDto;
 		}).collect(Collectors.toList());
 		return userDtos;
@@ -67,7 +50,7 @@ public class UserService {
 		userDto.setPassword(user.getPassword());
 		userDto.setUserName(user.getUserName());
 		userDto.setPhone(user.getPhone());
-//		s
+
 		return userDto;
 	}
 
@@ -87,7 +70,6 @@ public class UserService {
 		user.setPassword(userDto.getPassword());
 		user.setPhone(userDto.getPhone());
 		user.setStatus(userDto.getStatus());
-		// user.setGroup(groupRepository.findById(userDto.getGroupDto().getGroupId()).get());
 		userRepository.save(user);
 
 	}
@@ -98,10 +80,10 @@ public class UserService {
 			user.setUserId(userDto.getUserId());
 			user.setEmail(userDto.getEmail());
 			user.setUserName(userDto.getUserName());
-			user.setFullName(userDto.getFullName());
+			//user.setFullName(userDto.getFullName());
 			user.setPassword(userDto.getPassword());
-			user.setPhone(userDto.getPhone());
-			user.setStatus(userDto.getStatus());
+			//user.setPhone(userDto.getPhone());
+			//user.setStatus(userDto.getStatus());
 
 			userRepository.save(user);
 

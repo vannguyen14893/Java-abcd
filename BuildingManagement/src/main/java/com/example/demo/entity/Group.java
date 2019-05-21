@@ -25,7 +25,7 @@ public class Group implements Serializable {
 	private String name;
 	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<User> users;
-
+    private Integer status;
 	public Integer getGroupId() {
 		return groupId;
 	}
@@ -40,6 +40,22 @@ public class Group implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 }
