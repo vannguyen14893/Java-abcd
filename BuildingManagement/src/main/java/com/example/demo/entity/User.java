@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User implements Serializable {
 
@@ -30,24 +32,27 @@ public class User implements Serializable {
 	@Column
 	private String password;
 
-	@Column(name = "full_name")
-	private String fullName;
-
-	private String email;
-
-	private String phone;
-
-	private int status;
+//	@Column(name = "full_name")
+//	private String fullName;
+//
+//	private String email;
+//
+//	private String phone;
+//
+//	private int status;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_role", joinColumns = {
 			@JoinColumn(name = "user_id", nullable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "role_id", nullable = false) })
+	@JsonIgnore
 	private List<Role> roles;
 	@ManyToOne
 	@JoinColumn(name = "group_id")
+	@JsonIgnore
 	private Group group;
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	private List<Comment> comments;
 
 	public Integer getUserId() {
@@ -74,37 +79,37 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public String getFullName() {
-		return fullName;
-	}
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
+//	public String getFullName() {
+//		return fullName;
+//	}
+//
+//	public void setFullName(String fullName) {
+//		this.fullName = fullName;
+//	}
+//
+//	public String getEmail() {
+//		return email;
+//	}
+//
+//	public void setEmail(String email) {
+//		this.email = email;
+//	}
+//
+//	public String getPhone() {
+//		return phone;
+//	}
+//
+//	public void setPhone(String phone) {
+//		this.phone = phone;
+//	}
+//
+//	public int getStatus() {
+//		return status;
+//	}
+//
+//	public void setStatus(int status) {
+//		this.status = status;
+//	}
 
 	public List<Role> getRoles() {
 		return roles;

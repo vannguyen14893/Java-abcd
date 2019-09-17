@@ -36,7 +36,7 @@ public class CommentService {
 		CommentDto commentDto = new CommentDto();
 		commentDto.setContent(comment.getContent());
 		commentDto.setCommentId(comment.getCommentId());
-		commentDto.setNameUser(comment.getUser().getFullName());
+		//commentDto.setNameUser(comment.getUser().getFullName());
 		commentDto.setParentId(comment.getParentId());
 		commentDto.setStatus(comment.getStatus());
 
@@ -60,7 +60,7 @@ public class CommentService {
 			comment.setParentId(0);
 		}
 		 Comment comment2 =  commentRepository.save(comment);
-		 CommentDto commentDto = new CommentDto(comment2.getCommentId(), comment2.getContent(), comment2.getStatus(), comment2.getParentId(), comment2.getUser().getFullName());
+		 CommentDto commentDto =null;// new CommentDto(comment2.getCommentId(), comment2.getContent(), comment2.getStatus(), comment2.getParentId(), );
 		 return commentDto;
 
 	}

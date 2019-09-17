@@ -6,7 +6,7 @@ import com.example.demo.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
     
-	User findOneByFullName(String name);
+	//User findOneByFullName(String name);
 	User findOneByUserId(Integer id);
 	
 }

@@ -36,11 +36,11 @@ public class RoleService {
 			for (User user : users) {
 				UserDto userDto = new UserDto();
 				userDto.setUserId(user.getUserId());
-				userDto.setEmail(user.getEmail());
-				userDto.setFullName(user.getFullName());
-				userDto.setPassword(user.getPassword());
-				userDto.setPhone(user.getPhone());
-				userDto.setStatus(user.getStatus());
+//				userDto.setEmail(user.getEmail());
+//				userDto.setFullName(user.getFullName());
+//				userDto.setPassword(user.getPassword());
+//				userDto.setPhone(user.getPhone());
+//				userDto.setStatus(user.getStatus());
 				userDtos.add(userDto);
 				roleDto.setUserDtos(userDtos);
 			}
@@ -61,11 +61,11 @@ public class RoleService {
 			for (User user : users) {
 				UserDto userDto = new UserDto();
 				userDto.setUserId(user.getUserId());
-				userDto.setEmail(user.getEmail());
-				userDto.setFullName(user.getFullName());
-				userDto.setPassword(user.getPassword());
-				userDto.setPhone(user.getPhone());
-				userDto.setStatus(user.getStatus());
+//				userDto.setEmail(user.getEmail());
+//				userDto.setFullName(user.getFullName());
+//				userDto.setPassword(user.getPassword());
+//				userDto.setPhone(user.getPhone());
+//				userDto.setStatus(user.getStatus());
 				userDtos.add(userDto);
 				roleDto.setUserDtos(userDtos);
 			}

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.SortDto;
 import com.example.demo.dto.UserDto;
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.custom.UserRepositoryCustom;
 import com.example.demo.service.UserService;
 import com.example.demo.untils.Constant;
@@ -27,7 +29,8 @@ public class ApiUserController {
 	UserService userService;
 	@Autowired
 	private UserRepositoryCustom repo;
-
+    @Autowired
+    private UserRepository repository;
 	@PostMapping(value = "/list-user")
 	public List<UserDto> getAll(@RequestBody SortDto sortDto) {
 		// sortDto.setStatus("1");
@@ -35,9 +38,10 @@ public class ApiUserController {
 		return repo.getAllUser(sortDto);
 	}
 
-	@GetMapping(value = "/detail-user/{userId}")
-	public UserDto getUserDto(@PathVariable("userId") String userId) {
-		return userService.getUserDto(Integer.parseInt(userId));
+	@GetMapping(value = "/detail-user/{payload}")
+	public User getUser(@PathVariable("payload") Integer userId) {
+		User user=repository.findOneByUserId(userId);
+		return user;
 	}
 
 	@DeleteMapping(value = "/delete-user/{userId}")
@@ -66,12 +70,18 @@ public class ApiUserController {
 		userService.editRoleUser(userId, roleId);
 	}
 
-	@PostMapping(value = "/validate-fullName/{userId}")
-	public String validateFullName(@PathVariable("userId") Integer userId,@RequestBody String oldName) {
-		if (userService.validateFullNameByUser(oldName,userId) == null) {
-			return "";
-		} else {
-			return Constant.error;
-		}
+//	@PostMapping(value = "/validate-fullName/{userId}")
+//	public String validateFullName(@PathVariable("userId") Integer userId, @RequestBody String oldName) {
+//		if (userService.validateFullNameByUser(oldName, userId) == null) {
+//			return "";
+//		} else {
+//			return Constant.error;
+//		}
+//	}
+
+	@GetMapping(value = "/users")
+	public List<User> getUserDto() {
+		List<User> users=repository.findAll();
+		return users;
 	}
 }

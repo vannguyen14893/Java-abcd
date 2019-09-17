@@ -31,11 +31,11 @@ public class UserService {
 		List<UserDto> userDtos = users.stream().map(user -> {
 			UserDto userDto = new UserDto();
 			userDto.setUserId(user.getUserId());
-			userDto.setEmail(user.getEmail());
-			userDto.setFullName(user.getFullName());
+//			userDto.setEmail(user.getEmail());
+//			userDto.setFullName(user.getFullName());
 			userDto.setPassword(user.getPassword());
-			userDto.setUserName(user.getUserName());
-			userDto.setPhone(user.getPhone());
+		userDto.setUserName(user.getUserName());
+//			userDto.setPhone(user.getPhone());
 			return userDto;
 		}).collect(Collectors.toList());
 		return userDtos;
@@ -45,11 +45,11 @@ public class UserService {
 		User user = userRepository.findById(userId).get();
 		UserDto userDto = new UserDto();
 		userDto.setUserId(user.getUserId());
-		userDto.setEmail(user.getEmail());
-		userDto.setFullName(user.getFullName());
+//		userDto.setEmail(user.getEmail());
+//		userDto.setFullName(user.getFullName());
 		userDto.setPassword(user.getPassword());
 		userDto.setUserName(user.getUserName());
-		userDto.setPhone(user.getPhone());
+		//userDto.setPhone(user.getPhone());
 
 		return userDto;
 	}
@@ -64,12 +64,12 @@ public class UserService {
 
 	public void addUser(UserDto userDto) {
 		User user = new User();
-		user.setEmail(userDto.getEmail());
+		//user.setEmail(userDto.getEmail());
 		user.setUserName(userDto.getUserName());
-		user.setFullName(userDto.getFullName());
+//		user.setFullName(userDto.getFullName());
 		user.setPassword(userDto.getPassword());
-		user.setPhone(userDto.getPhone());
-		user.setStatus(userDto.getStatus());
+//		user.setPhone(userDto.getPhone());
+//		user.setStatus(userDto.getStatus());
 		userRepository.save(user);
 
 	}
@@ -78,7 +78,7 @@ public class UserService {
 		User user = userRepository.findById(userDto.getUserId()).get();
 		if (user != null) {
 			user.setUserId(userDto.getUserId());
-			user.setEmail(userDto.getEmail());
+			//user.setEmail(userDto.getEmail());
 			user.setUserName(userDto.getUserName());
 			//user.setFullName(userDto.getFullName());
 			user.setPassword(userDto.getPassword());
@@ -103,17 +103,17 @@ public class UserService {
 
 	}
 
-	public User validateFullNameByUser(String oldName, Integer userId) {
-		User userOld = userRepository.findOneByUserId(userId);
-		if (!userOld.getFullName().equals(oldName)) {
-			User user = userRepository.findOneByFullName(oldName);
-			if (user != null) {
-				return user;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+//	public User validateFullNameByUser(String oldName, Integer userId) {
+//		User userOld = userRepository.findOneByUserId(userId);
+//		if (!userOld.getFullName().equals(oldName)) {
+//			User user = userRepository.findOneByFullName(oldName);
+//			if (user != null) {
+//				return user;
+//			} else {
+//				return null;
+//			}
+//		} else {
+//			return null;
+//		}
+//	}
 }
