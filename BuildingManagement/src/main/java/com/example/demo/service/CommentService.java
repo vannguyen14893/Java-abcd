@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.CommentDto;
 import com.example.demo.entity.Comment;
+import com.example.demo.entity.User;
 import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.UserRepository;
 
@@ -36,7 +37,7 @@ public class CommentService {
 		CommentDto commentDto = new CommentDto();
 		commentDto.setContent(comment.getContent());
 		commentDto.setCommentId(comment.getCommentId());
-		//commentDto.setNameUser(comment.getUser().getFullName());
+		// commentDto.setNameUser(comment.getUser().getFullName());
 		commentDto.setParentId(comment.getParentId());
 		commentDto.setStatus(comment.getStatus());
 
@@ -59,10 +60,14 @@ public class CommentService {
 		} else {
 			comment.setParentId(0);
 		}
-		 Comment comment2 =  commentRepository.save(comment);
-		 CommentDto commentDto =null;// new CommentDto(comment2.getCommentId(), comment2.getContent(), comment2.getStatus(), comment2.getParentId(), );
-		 return commentDto;
+		Comment comment2 = commentRepository.save(comment);
+		CommentDto commentDto = null;// new CommentDto(comment2.getCommentId(), comment2.getContent(),
+										// comment2.getStatus(), comment2.getParentId(), );
+		return commentDto;
 
 	}
 
+	public void addCommment(Comment comment) {
+		commentRepository.save(comment);
+	}
 }
