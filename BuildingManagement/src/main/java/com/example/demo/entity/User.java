@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,10 +27,11 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Integer userId;
-	@Column(name = "user_name")
+	@Column(name = "user_name",nullable = false)
+	@Size(min = 2,max = 7)
 	private String userName;
 
-	@Column
+	@Size(min = 2,max = 7)
 	private String password;
 
 //	@Column(name = "full_name")

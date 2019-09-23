@@ -1,9 +1,15 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,14 +29,15 @@ import com.example.demo.service.UserService;
 import com.example.demo.untils.Constant;
 
 @RestController
-@CrossOrigin(value = "http://localhost:4200", maxAge = 3600)
+//@CrossOrigin(value = "http://localhost:4200", maxAge = 3600)
 public class ApiUserController {
 	@Autowired
 	UserService userService;
 	@Autowired
 	private UserRepositoryCustom repo;
-    @Autowired
-    private UserRepository repository;
+	@Autowired
+	private UserRepository repository;
+
 	@PostMapping(value = "/list-user")
 	public List<UserDto> getAll(@RequestBody SortDto sortDto) {
 		// sortDto.setStatus("1");
@@ -40,7 +47,7 @@ public class ApiUserController {
 
 	@GetMapping(value = "/detail-user/{payload}")
 	public User getUser(@PathVariable("payload") Integer userId) {
-		User user=repository.findOneByUserId(userId);
+		User user = repository.findOneByUserId(userId);
 		return user;
 	}
 
@@ -50,14 +57,28 @@ public class ApiUserController {
 			userService.deleteUser(Integer.parseInt(userId));
 			return ResponseEntity.ok("OK");
 		} catch (Exception e) {
-			return ResponseEntity.ok("NOT OK");
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 
 	@PostMapping(value = "/add-user")
-	public void addUser(@RequestBody UserDto userDto) {
-		userService.addUser(userDto);
+	public ResponseEntity<?> addUser(@Valid @RequestBody User user, BindingResult result) {
+		List<String> errors = new ArrayList<String>();
+		try {		
+			if (result.hasErrors()) {
+				List<FieldError> fieldErrors = result.getFieldErrors();
+				for (FieldError error : fieldErrors) {
+					errors.add(error.getField() + " " + error.getDefaultMessage());
+				}
+				return ResponseEntity.badRequest().body(errors);
+			} else {
+				repository.save(user);
+				return ResponseEntity.ok("ok");
+			}
 
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PutMapping(value = "/update-user/{userId}")
@@ -81,7 +102,7 @@ public class ApiUserController {
 
 	@GetMapping(value = "/users")
 	public List<User> getUserDto() {
-		List<User> users=repository.findAll();
+		List<User> users = repository.findAll();
 		return users;
 	}
 }

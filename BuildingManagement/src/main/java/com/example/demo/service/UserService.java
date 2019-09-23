@@ -34,7 +34,7 @@ public class UserService {
 //			userDto.setEmail(user.getEmail());
 //			userDto.setFullName(user.getFullName());
 			userDto.setPassword(user.getPassword());
-		userDto.setUserName(user.getUserName());
+			userDto.setUserName(user.getUserName());
 //			userDto.setPhone(user.getPhone());
 			return userDto;
 		}).collect(Collectors.toList());
@@ -49,22 +49,22 @@ public class UserService {
 //		userDto.setFullName(user.getFullName());
 		userDto.setPassword(user.getPassword());
 		userDto.setUserName(user.getUserName());
-		//userDto.setPhone(user.getPhone());
+		// userDto.setPhone(user.getPhone());
 
 		return userDto;
 	}
 
 	public void deleteUser(Integer userId) {
 		User user = userRepository.findById(userId).get();
-		if (user != null) {
-			userRepository.delete(user);
+		if (user == null)
+			throw new NullPointerException();
+		userRepository.delete(user);
 
-		}
 	}
 
 	public void addUser(UserDto userDto) {
 		User user = new User();
-		//user.setEmail(userDto.getEmail());
+		// user.setEmail(userDto.getEmail());
 		user.setUserName(userDto.getUserName());
 //		user.setFullName(userDto.getFullName());
 		user.setPassword(userDto.getPassword());
@@ -78,12 +78,12 @@ public class UserService {
 		User user = userRepository.findById(userDto.getUserId()).get();
 		if (user != null) {
 			user.setUserId(userDto.getUserId());
-			//user.setEmail(userDto.getEmail());
+			// user.setEmail(userDto.getEmail());
 			user.setUserName(userDto.getUserName());
-			//user.setFullName(userDto.getFullName());
+			// user.setFullName(userDto.getFullName());
 			user.setPassword(userDto.getPassword());
-			//user.setPhone(userDto.getPhone());
-			//user.setStatus(userDto.getStatus());
+			// user.setPhone(userDto.getPhone());
+			// user.setStatus(userDto.getStatus());
 
 			userRepository.save(user);
 
