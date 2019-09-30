@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.dto.RoleDto;
 import com.example.demo.dto.UserDto;
 import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
@@ -42,7 +40,7 @@ public class UserService {
 	}
 
 	public UserDto getUserDto(Integer userId) {
-		User user = userRepository.findById(userId).get();
+		User user = userRepository.findOneByUserId(userId);
 		UserDto userDto = new UserDto();
 		userDto.setUserId(user.getUserId());
 //		userDto.setEmail(user.getEmail());
@@ -55,7 +53,7 @@ public class UserService {
 	}
 
 	public void deleteUser(Integer userId) {
-		User user = userRepository.findById(userId).get();
+		User user = userRepository.findOneByUserId(userId);
 		if (user == null)
 			throw new NullPointerException();
 		userRepository.delete(user);
@@ -116,4 +114,6 @@ public class UserService {
 //			return null;
 //		}
 //	}
+
+	
 }

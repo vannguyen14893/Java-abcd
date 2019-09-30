@@ -6,6 +6,13 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,11 +58,11 @@ public class ApiUserController {
 		User user = repository.findOneByUserId(userId);
 		return user;
 	}
-
+	@CacheEvict(value = "users", key = "#userId")
 	@DeleteMapping(value = "/delete-user/{userId}")
-	public ResponseEntity<String> deleteUser(@PathVariable("userId") String userId) {
+	public ResponseEntity<String> deleteUser(@PathVariable("userId") Integer userId) {
 		try {
-			userService.deleteUser(Integer.parseInt(userId));
+			userService.deleteUser(userId);
 			return ResponseEntity.ok("OK");
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -80,7 +88,7 @@ public class ApiUserController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
+	@CachePut(value = "users", key = "#userDto.userId")
 	@PutMapping(value = "/update-user/{userId}")
 	public void updateUser(@PathVariable("userId") String userId, @RequestBody UserDto userDto) {
 		userService.updateUser(userDto);
@@ -99,10 +107,17 @@ public class ApiUserController {
 //			return Constant.error;
 //		}
 //	}
-
+	@Cacheable(value = "users")
 	@GetMapping(value = "/users")
-	public List<User> getUserDto() {
-		List<User> users = repository.findAll();
+	public Page<User> getUserDto(Pageable pageable) {
+		Pageable pageRequest=PageRequest.of(0, 10);
+		
+//		try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+		Page<User> users = repository.findAll(pageRequest);
 		return users;
 	}
 }

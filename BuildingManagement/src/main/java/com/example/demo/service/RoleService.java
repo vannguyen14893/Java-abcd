@@ -1,13 +1,17 @@
 package com.example.demo.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.dto.RoleDto;
 import com.example.demo.dto.UserDto;
@@ -108,6 +112,25 @@ public class RoleService {
 		}
 		return roleDtos;
 	}
-	
+	RestTemplate restTemplate = new RestTemplate();
+    public List<Role> getUser() {
+        String url = "http://localhost:8080/list-role";
+        Role[] response = restTemplate.getForObject(url, Role[].class);
+        return Arrays.asList(response);
+    }
+    @Async
+    public CompletableFuture<List<Role>> getCountriesByLanguage(String role1) {
+        String url = "http://localhost:8080/get-roleName" + "?roleName=" + role1 ;
+        Role[] response = restTemplate.getForObject(url, Role[].class);
 
+        return CompletableFuture.completedFuture(Arrays.asList(response));
+    }
+
+    @Async
+    public CompletableFuture<List<Role>> getCountriesByRegion(String role2) {
+        String url = "http://localhost:8080/get-roleName"  + "?roleName=" + role2;
+        Role[] response = restTemplate.getForObject(url, Role[].class);
+        return CompletableFuture.completedFuture(Arrays.asList(response));
+        
+    }
 }
