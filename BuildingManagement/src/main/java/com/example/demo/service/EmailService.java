@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -24,7 +25,7 @@ public class EmailService {
 
 	@Autowired
 	private SpringTemplateEngine templateEngine;
-
+	
 	public void sendSimpleMessage(Mail mail) throws MessagingException, IOException {
 		MimeMessage message = emailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,

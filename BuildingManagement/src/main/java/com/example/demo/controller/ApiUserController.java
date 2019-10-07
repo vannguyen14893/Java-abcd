@@ -1,8 +1,12 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,8 +38,10 @@ import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.custom.UserRepositoryCustom;
+import com.example.demo.service.EmailService;
 import com.example.demo.service.UserService;
 import com.example.demo.untils.Constant;
+import com.example.demo.untils.Mail;
 
 @RestController
 //@CrossOrigin(value = "http://localhost:4200", maxAge = 3600)
@@ -45,7 +52,8 @@ public class ApiUserController {
 	private UserRepositoryCustom repo;
 	@Autowired
 	private UserRepository repository;
-
+	@Autowired
+	private EmailService emailService;
 	@PostMapping(value = "/list-user")
 	public List<UserDto> getAll(@RequestBody SortDto sortDto) {
 		// sortDto.setStatus("1");
@@ -54,8 +62,9 @@ public class ApiUserController {
 	}
 
 	@GetMapping(value = "/detail-user/{payload}")
-	public User getUser(@PathVariable("payload") Integer userId) {
+	public User getUser(@PathVariable("payload") Integer userId) throws MessagingException, IOException {
 		User user = repository.findOneByUserId(userId);
+		
 		return user;
 	}
 	@CacheEvict(value = "users", key = "#userId")
@@ -118,6 +127,20 @@ public class ApiUserController {
 //            e.printStackTrace();
 //        }
 		Page<User> users = repository.findAll(pageRequest);
+		
 		return users;
+	}
+	@Scheduled(cron = "0 22 21 * * *")
+	public void sendMail() throws MessagingException, IOException {
+		Mail mail = new Mail();
+		mail.setFrom("ducvan14893@gmail.com");
+		mail.setTo("ducvan14893@gmail.com");
+		mail.setSubject("Sending Email with Thymeleaf HTML Template Example");
+		Map model = new HashMap();
+		model.put("name", "Memorynotfound.com");
+		model.put("location", "Belgium");
+		model.put("signature", "https://memorynotfound.com");
+		mail.setModel(model);
+		emailService.sendSimpleMessage(mail);
 	}
 }
